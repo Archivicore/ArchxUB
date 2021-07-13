@@ -7,7 +7,7 @@ from typing import Union
 import aiohttp
 import spamwatch
 from spamwatch.types import Ban
-from ArchxAntiSpamApi import Client
+from UsergeAntiSpamApi import Client
 
 from Archx import Archx, Message, Config, get_collection, filters, pool
 
