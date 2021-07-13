@@ -1,0 +1,16 @@
+#!/bin/bash
+
+. init/proc.sh
+
+declare -ir usr1=138
+declare -r cmd='. init/init.sh; runArchx "$@"'
+
+run() {
+    reInitProc
+    bash -c "$cmd" $0 "$@" &
+    setProc $!
+    waitProc
+    test $? -eq $usr1 && run "$@"
+}
+
+run "$@"
