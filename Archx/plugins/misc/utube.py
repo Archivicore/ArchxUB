@@ -21,7 +21,7 @@ LOGGER = Archx.getLogger(__name__)
                                 'examples': '{tr}ytinfo link',
                                 'others': 'To get info about direct links, use `{tr}head link`'})
 async def ytinfo(message: Message):
-    """ get info from a link """
+    """ dapatkan info dari tautan """
     await message.edit("Hold on \u23f3 ..")
     _exracted = await _yt_getInfo(message.input_or_reply_str)
     if isinstance(_exracted, ytdl.utils.YoutubeDLError):
@@ -57,7 +57,7 @@ __{uploader}__
                                            '{tr}ytdl -m -t -d link will upload '
                                            'the mp3 as a document']}, del_pre=True)
 async def ytDown(message: Message):
-    """ download from a link """
+    """ unduh dari tautan """
     edited = False
     startTime = c_time = time()
 
@@ -117,7 +117,7 @@ async def ytDown(message: Message):
         if not _fpath:
             await message.err("nothing found !")
             return
-        await message.edit(f"**YTDL completed in {round(time() - startTime)} seconds**\n`{_fpath}`")
+        await message.edit(f"**YTDL selesai {round(time() - startTime)} detik**\n`{_fpath}`")
         if 't' in message.flags:
             await upload(message, Path(_fpath))
     else:
@@ -128,7 +128,7 @@ async def ytDown(message: Message):
                                'description': 'Get information of the link without downloading',
                                'examples': '{tr}ytdes link'})
 async def ytdes(message: Message):
-    """ get description from a link """
+    """ dapatkan deskripsi dari tautan """
     await message.edit("Hold on \u23f3 ..")
     description = await _yt_description(message.input_or_reply_str)
     if isinstance(description, ytdl.utils.YoutubeDLError):
@@ -161,7 +161,7 @@ def _yt_getInfo(link):
             {'no-playlist': True, 'logger': LOGGER}).extract_info(link, download=False)
         thumb = x.get('thumbnail', '')
         formats = x.get('formats', [x])
-        out = "No formats found :("
+        out = "Tidak ada format yang ditemukan :("
         if formats:
             out = "--U-ID   |   Reso.  |   Extension--\n"
         for i in formats:

@@ -32,28 +32,28 @@ LOGO_PATH = 'resources/Archx.png'
     'usage': "{tr}rename [flags] [new_name_with_extension] : reply to telegram media",
     'examples': "{tr}rename -d test.mp4"}, del_pre=True, check_downpath=True)
 async def rename_(message: Message):
-    """ rename telegram files """
+    """ ganti nama file telegram """
     if not message.filtered_input_str:
-        await message.err("new name not found!")
+        await message.err("nama baru tidak ditemukan!")
         return
-    await message.edit("`Trying to Rename ...`")
+    await message.edit("`Mencoba untuk Mengganti Nama ...`")
     if message.reply_to_message and message.reply_to_message.media:
         await _handle_message(message)
     else:
-        await message.err("reply to media to rename it")
+        await message.err("balas ke media untuk mengganti namanya")
 
 
 @Archx.on_cmd("convert", about={
     'header': "Convert telegram files",
     'usage': "reply {tr}convert to any media"}, del_pre=True, check_downpath=True)
 async def convert_(message: Message):
-    """ convert telegram files """
-    await message.edit("`Trying to Convert ...`")
+    """ konversi file telegram """
+    await message.edit("`Mencoba untuk Mengkonversi ...`")
     if message.reply_to_message and message.reply_to_message.media:
         message.text = '' if message.reply_to_message.document else ". -d"
         await _handle_message(message)
     else:
-        await message.err("reply to media to convert it")
+        await message.err("balas ke media untuk mengubahnya")
 
 
 @Archx.on_cmd("upload", about={
@@ -66,10 +66,10 @@ async def convert_(message: Message):
         "{tr}upload -d https://speed.hetzner.de/100MB.bin | test.bin",
         "{tr}upload downloads/test.mp4"]}, del_pre=True, check_downpath=True)
 async def upload_to_tg(message: Message):
-    """ upload to telegram """
+    """ unggah ke telegram """
     path_ = message.filtered_input_str
     if not path_:
-        await message.err("Input not foud!")
+        await message.err("Masukan tidak ditemukan!")
         return
     is_url = re.search(r"(?:https?|ftp)://[^|\s]+\.[^|\s]+", path_)
     del_path = False
@@ -78,7 +78,7 @@ async def upload_to_tg(message: Message):
         try:
             path_, _ = await url_download(message, path_)
         except ProcessCanceled:
-            await message.edit("`Process Canceled!`", del_in=5)
+            await message.edit("`Proses Dibatalkan!`", del_in=5)
             return
         except Exception as e_e:  # pylint: disable=broad-except
             await message.err(str(e_e))
@@ -93,7 +93,7 @@ async def upload_to_tg(message: Message):
     try:
         string = Path(path_)
     except IndexError:
-        await message.err("wrong syntax")
+        await message.err("sintaks yang salah")
     else:
         await message.delete()
         await upload_path(message, string, del_path)
@@ -103,7 +103,7 @@ async def _handle_message(message: Message) -> None:
     try:
         dl_loc, _ = await tg_download(message, message.reply_to_message)
     except ProcessCanceled:
-        await message.edit("`Process Canceled!`", del_in=5)
+        await message.edit("`Proses Dibatalkan!`", del_in=5)
     except Exception as e_e:  # pylint: disable=broad-except
         await message.err(str(e_e))
     else:
@@ -158,7 +158,7 @@ async def doc_upload(message: Message, path, del_path: bool = False,
                      extra: str = '', with_thumb: bool = True):
     str_path = str(path)
     sent: Message = await message.client.send_message(
-        message.chat.id, f"`Uploading {str_path} as a doc ... {extra}`")
+        message.chat.id, f"`Mengunggah {str_path} sebagai dokumen ... {extra}`")
     start_t = datetime.now()
     thumb = None
     if with_thumb:
@@ -173,10 +173,10 @@ async def doc_upload(message: Message, path, del_path: bool = False,
             parse_mode="html",
             disable_notification=True,
             progress=progress,
-            progress_args=(message, f"uploading {extra}", str_path)
+            progress_args=(message, f"mengunggah {extra}", str_path)
         )
     except ValueError as e_e:
-        await sent.edit(f"Skipping `{str_path}` due to {e_e}")
+        await sent.edit(f"Melewatkan `{str_path}` disebabkan oleh {e_e}")
     except Exception as u_e:
         await sent.edit(str(u_e))
         raise u_e
@@ -198,7 +198,7 @@ async def vid_upload(message: Message, path, del_path: bool = False,
     if metadata and metadata.has("duration"):
         duration = metadata.get("duration").seconds
     sent: Message = await message.client.send_message(
-        message.chat.id, f"`Uploading {str_path} as a video ... {extra}`")
+        message.chat.id, f"`Mengunggah {str_path} sebagai video ... {extra}`")
     start_t = datetime.now()
     await message.client.send_chat_action(message.chat.id, "upload_video")
     width = 0
@@ -221,10 +221,10 @@ async def vid_upload(message: Message, path, del_path: bool = False,
             parse_mode="html",
             disable_notification=True,
             progress=progress,
-            progress_args=(message, f"uploading {extra}", str_path)
+            progress_args=(message, f"mengunggah {extra}", str_path)
         )
     except ValueError as e_e:
-        await sent.edit(f"Skipping `{str_path}` due to {e_e}")
+        await sent.edit(f"Melewatkan `{str_path}` disebabkan oleh {e_e}")
     except Exception as u_e:
         await sent.edit(str(u_e))
         raise u_e
@@ -265,7 +265,7 @@ async def audio_upload(message: Message, path, del_path: bool = False,
     if metadata and metadata.has("duration"):
         duration = metadata.get("duration").seconds
     sent: Message = await message.client.send_message(
-        message.chat.id, f"`Uploading {str_path} as audio ... {extra}`")
+        message.chat.id, f"`Mengunggah {str_path} sebagai audio ... {extra}`")
     start_t = datetime.now()
     await message.client.send_chat_action(message.chat.id, "upload_audio")
     try:
@@ -280,10 +280,10 @@ async def audio_upload(message: Message, path, del_path: bool = False,
             parse_mode="html",
             disable_notification=True,
             progress=progress,
-            progress_args=(message, f"uploading {extra}", str_path)
+            progress_args=(message, f"mengunggah {extra}", str_path)
         )
     except ValueError as e_e:
-        await sent.edit(f"Skipping `{str_path}` due to {e_e}")
+        await sent.edit(f"Melewatkan `{str_path}` disebabkan oleh {e_e}")
     except Exception as u_e:
         await sent.edit(str(u_e))
         raise u_e
@@ -300,7 +300,7 @@ async def audio_upload(message: Message, path, del_path: bool = False,
 async def photo_upload(message: Message, path, del_path: bool = False, extra: str = ''):
     str_path = str(path)
     sent: Message = await message.client.send_message(
-        message.chat.id, f"`Uploading {path.name} as photo ... {extra}`")
+        message.chat.id, f"`Mengunggah {path.name} sebagai foto ... {extra}`")
     start_t = datetime.now()
     await message.client.send_chat_action(message.chat.id, "upload_photo")
     try:
@@ -311,10 +311,10 @@ async def photo_upload(message: Message, path, del_path: bool = False, extra: st
             parse_mode="html",
             disable_notification=True,
             progress=progress,
-            progress_args=(message, f"uploading {extra}", str_path)
+            progress_args=(message, f"mengunggah {extra}", str_path)
         )
     except ValueError as e_e:
-        await sent.edit(f"Skipping `{str_path}` due to {e_e}")
+        await sent.edit(f"Melewatkan `{str_path}` disebabkan oleh {e_e}")
     except Exception as u_e:
         await sent.edit(str(u_e))
         raise u_e
@@ -361,8 +361,8 @@ async def finalize(message: Message, msg: Message, start_t):
     await CHANNEL.fwd_msg(msg)
     await message.client.send_chat_action(message.chat.id, "cancel")
     if message.process_is_canceled:
-        await message.edit("`Process Canceled!`", del_in=5)
+        await message.edit("`Proses Dibatalkan!`", del_in=5)
     else:
         end_t = datetime.now()
         m_s = (end_t - start_t).seconds
-        await message.edit(f"Uploaded in {m_s} seconds", del_in=10)
+        await message.edit(f"Diunggah dalam {m_s} detik", del_in=10)

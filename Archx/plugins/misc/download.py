@@ -23,34 +23,34 @@ LOGGER = Archx.getLogger(__name__)
     'examples': "{tr}download https://speed.hetzner.de/100MB.bin | testing upload.bin"},
     check_downpath=True)
 async def down_load_media(message: Message):
-    """ download from tg and url """
+    """ unduh dari tg dan url """
     if message.reply_to_message and message.reply_to_message.media:
         resource = message.reply_to_message
     elif message.input_str:
         resource = message.input_str
     else:
-        await message.err("nothing found to download")
+        await message.err("tidak ada yang ditemukan untuk diunduh")
         return
     try:
         dl_loc, d_in = await handle_download(message, resource)
     except ProcessCanceled:
-        await message.edit("`Process Canceled!`", del_in=5)
+        await message.edit("`Proses Dibatalkan!`", del_in=5)
     except Exception as e_e:  # pylint: disable=broad-except
         await message.err(str(e_e))
     else:
-        await message.edit(f"Downloaded to `{dl_loc}` in {d_in} seconds")
+        await message.edit(f"Diunduh ke `{dl_loc}` di {d_in} detik")
 
 
 async def handle_download(message: Message, resource: Union[Message, str]) -> Tuple[str, int]:
-    """ download from resource """
+    """ unduh dari sumber """
     if isinstance(resource, Message):
         return await tg_download(message, resource)
     return await url_download(message, resource)
 
 
 async def url_download(message: Message, url: str) -> Tuple[str, int]:
-    """ download from link """
-    await message.edit("`Downloading From URL...`")
+    """ unduh dari tautan """
+    await message.edit("`Mengunduh Dari URL...`")
     start_t = datetime.now()
     custom_file_name = unquote_plus(os.path.basename(url))
     if "|" in url:
@@ -82,7 +82,7 @@ async def url_download(message: Message, url: str) -> Tuple[str, int]:
             "**Speed** : `{}`\n" + \
             "**ETA** : `{}`"
         progress_str = progress_str.format(
-            "trying to download",
+            "mencoba mengunduh",
             ''.join((Config.FINISHED_PROGRESS_STR
                      for _ in range(math.floor(percentage / 5)))),
             ''.join((Config.UNFINISHED_PROGRESS_STR
@@ -103,8 +103,8 @@ async def url_download(message: Message, url: str) -> Tuple[str, int]:
 
 
 async def tg_download(message: Message, to_download: Message) -> Tuple[str, int]:
-    """ download from tg file """
-    await message.edit("`Downloading From TG...`")
+    """ unduh dari file tg """
+    await message.edit("`Mengunduh Dari TG...`")
     start_t = datetime.now()
     custom_file_name = Config.DOWN_PATH
     if message.filtered_input_str:
@@ -113,11 +113,11 @@ async def tg_download(message: Message, to_download: Message) -> Tuple[str, int]
         message=to_download,
         file_name=custom_file_name,
         progress=progress,
-        progress_args=(message, "trying to download")
+        progress_args=(message, "coba download")
     )
     if message.process_is_canceled:
         raise ProcessCanceled
     if not isinstance(dl_loc, str):
-        raise TypeError("File Corrupted!")
+        raise TypeError("File Rusak!")
     dl_loc = os.path.relpath(dl_loc)
     return dl_loc, (datetime.now() - start_t).seconds
