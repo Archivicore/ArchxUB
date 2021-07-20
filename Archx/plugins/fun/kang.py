@@ -42,20 +42,20 @@ async def kang_(message: Message):
             is_anim = True
         elif replied.sticker:
             if not replied.sticker.file_name:
-                await message.edit("`Sticker has no Name!`")
+                await message.edit("`Sticker tidak memiliki Nama!`")
                 return
             emoji_ = replied.sticker.emoji
             is_anim = replied.sticker.is_animated
             if not replied.sticker.file_name.endswith('.tgs'):
                 resize = True
         else:
-            await message.edit("`Unsupported File!`")
+            await message.edit("`File Tidak Didukung!`")
             return
         await message.edit(f"`{random.choice(KANGING_STR)}`")
         photo = await Archx.download_media(message=replied,
                                             file_name=Config.DOWN_PATH)
     else:
-        await message.err("`I can't kang that...`")
+        await message.err("`Saya tidak bisa curi itu...`")
         return
     if photo:
         args = message.filtered_input_str.split(' ')
@@ -86,7 +86,7 @@ async def kang_(message: Message):
         else:
             u_name = user.first_name or user.id
         packname = f"a{user.id}_by_Archx_{pack}"
-        custom_packnick = Config.CUSTOM_PACK_NAME or f"{u_name}'s kang pack"
+        custom_packnick = Config.CUSTOM_PACK_NAME or f"{u_name}'s pack"
         packnick = f"{custom_packnick} Vol.{pack}"
         cmd = '/newpack'
         if resize:
@@ -121,11 +121,11 @@ async def kang_(message: Message):
                     if is_anim:
                         packname += "_anim"
                         packnick += " (Animated)"
-                    await message.edit("`Switching to Pack " + str(pack) +
-                                       " due to insufficient space`")
+                    await message.edit("`Beralih ke Paket " + str(pack) +
+                                       " karena ruang yang tidak mencukupi`")
                     await conv.send_message(packname)
                     msg = await conv.get_response(mark_read=True)
-                    if msg.text == "Invalid pack selected.":
+                    if msg.text == "Paket yang dipilih tidak valid.":
                         await conv.send_message(cmd)
                         await conv.get_response(mark_read=True)
                         await conv.send_message(packnick)
@@ -148,20 +148,20 @@ async def kang_(message: Message):
                         else:
                             out = "__kanged__" if '-s' in message.flags else \
                                 f"[kanged](t.me/addstickers/{packname})"
-                            await message.edit(f"**Sticker** {out} __in a Different Pack__**!**")
+                            await message.edit(f"**Sticker** {out} __dalam berbeda Pack__**!**")
                         return
                 await conv.send_document(photo)
                 rsp = await conv.get_response(mark_read=True)
-                if "Sorry, the file type is invalid." in rsp.text:
-                    await message.edit("`Failed to add sticker, use` @Stickers "
-                                       "`bot to add the sticker manually.`")
+                if "Maaf, jenis file tidak valid." in rsp.text:
+                    await message.edit("`Gagal menambahkan sticker, menggunakan` @Stickers "
+                                       "`bot untuk menambahkan stiker secara manual.`")
                     return
                 await conv.send_message(emoji_)
                 await conv.get_response(mark_read=True)
                 await conv.send_message('/done')
                 await conv.get_response(mark_read=True)
         else:
-            await message.edit("`Brewing a new Pack...`")
+            await message.edit("`Menyeduh yang pack baru...`")
             async with Archx.conversation('Stickers') as conv:
                 try:
                     await conv.send_message(cmd)
@@ -173,9 +173,9 @@ async def kang_(message: Message):
                 await conv.get_response(mark_read=True)
                 await conv.send_document(photo)
                 rsp = await conv.get_response(mark_read=True)
-                if "Sorry, the file type is invalid." in rsp.text:
-                    await message.edit("`Failed to add sticker, use` @Stickers "
-                                       "`bot to add the sticker manually.`")
+                if "Maaf, jenis file tidak valid." in rsp.text:
+                    await message.edit("`Gagal menambahkan sticker, menggunakan` @Stickers "
+                                       "`bot untuk menambahkan stiker secara manual.`")
                     return
                 await conv.send_message(emoji_)
                 await conv.get_response(mark_read=True)
@@ -245,13 +245,8 @@ def resize_photo(photo: str) -> io.BytesIO:
 
 
 KANGING_STR = (
-    "Using Witchery to kang this sticker...",
-    "Plagiarising hehe...",
-    "Inviting this sticker over to my pack...",
-    "Kanging this sticker...",
-    "Hey that's a nice sticker!\nMind if I kang?!..",
-    "hehe me stel ur stikér\nhehe.",
-    "Ay look over there (☉｡☉)!→\nWhile I kang this...",
-    "Roses are red violets are blue, kanging this sticker so my pacc looks cool",
-    "Imprisoning this sticker...",
-    "Mr.Steal Your Sticker is stealing this sticker... ")
+    "Menggunakan Ilmu Sihir untuk memasang stiker ini...",
+    "Menjiplak hehe...",
+    "Menjiplak stiker ini ke paket saya...",
+    "Mengambil stiker ini...",
+    "Hei itu stiker yang bagus!\nKeberatan jika aku curi
