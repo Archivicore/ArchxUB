@@ -249,4 +249,5 @@ KANGING_STR = (
     "Menjiplak hehe...",
     "Menjiplak stiker ini ke paket saya...",
     "Mengambil stiker ini...",
-    "Hei itu stiker yang bagus!\nKeberatan jika aku curi
+    "Hei itu stiker yang bagus!\nKeberatan jika aku curi",
+)
