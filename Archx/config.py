@@ -49,6 +49,7 @@ class Config:
     WEATHER_DEFCITY = os.environ.get("WEATHER_DEFCITY")
     TZ_NUMBER = os.environ.get("TZ_NUMBER", 7)
     MAX_DURATION = int(os.environ.get("MAX_DURATION", 900))
+    RSS_DELAY = int(os.environ.get("MAX_DURATION", None))
     G_DRIVE_CLIENT_ID = os.environ.get("G_DRIVE_CLIENT_ID")
     G_DRIVE_CLIENT_SECRET = os.environ.get("G_DRIVE_CLIENT_SECRET")
     G_DRIVE_PARENT_ID = os.environ.get("G_DRIVE_PARENT_ID")
