@@ -9,6 +9,8 @@ from Archx.utils.functions import (get_http_status_code,
                                  get_urls_from_text)
 from Archx.utils.rss import Feed
 
+_LOG = logging.getLogger(__name__)
+
 RSS_COLLECTION = get_collection("RSS_FEEDS")
 
 """ RSS DB """
@@ -125,7 +127,7 @@ async def add_feed_func(msg: Message):
         return await msg.reply(ns)
     await add_rss_feed(chat_id, feed.url, feed.title)
 
-@userge.on_cmd("delrss", about={
+@Archx.on_cmd("delrss", about={
     'header': "Delete a existing Feed Url from Database.",
     'flags': {'-all': 'Delete All Urls.'},
     'usage': "{tr}delrss title"})
